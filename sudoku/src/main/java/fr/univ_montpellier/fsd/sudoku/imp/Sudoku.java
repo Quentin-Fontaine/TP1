@@ -4,6 +4,8 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Sudoku {
 
@@ -28,9 +30,49 @@ public class Sudoku {
 	 */
 
 	private boolean solutionChecker() {
-		// TODO
-		return false;
 
+/*		// check the line
+		int line = 0;
+		int col = 0;
+		int numCase = this.grid[line][col];
+		for(int j=line+1; j < n; j++) {
+			if (numCase == this.grid[line][j]) return false;
+		}
+
+		// check column
+		for(int k=0; k < n; k++) {
+			if (numCase == this.grid[k][col]) return false;
+		}*/
+
+		for (int i=0; i < n; i++) {
+
+			// Set<> only accept different value.
+			Set<Integer> tmp = new HashSet<>();
+
+			// Check columns
+			for (int j=0; j < n; j++) {
+				tmp.add(this.grid[i][j]);
+			}
+
+			// Check all value different and reset tmp.
+			if (tmp.size() != n) return false;
+			tmp = new HashSet<>();
+
+			// Check line
+			for (int k=0; k < n; k++) {
+				tmp.add(this.grid[k][i]);
+			}
+
+			if (tmp.size() != n) return false;
+
+			// Check squares
+			for (int l=0; l < n; l+=s) {
+				tmp.add(this.grid[i][l]);
+			}
+
+			if (tmp.size() != n) return false;
+		}
+		return false;
 	}
 
 	/*
