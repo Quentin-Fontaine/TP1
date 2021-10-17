@@ -1,5 +1,7 @@
 package fr.univ_montpellier.fsd.sudoku;
 
+import fr.univ_montpellier.fsd.sudoku.imp.Sudoku;
+
 /**
  * Hello world!
  *

@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
 public class Sudoku {
 
@@ -40,7 +41,24 @@ public class Sudoku {
 
 	private void generateSolution() {
 		// TODO
-
+		Random random = new Random();
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				grid[i][j] = random.nextInt(9) + 1;
+			}
+		}
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				System.out.print("| " + grid[i][j] + " ");
+				if ((j+1) % 3 == 0) {
+					System.out.print("|   ");
+				}
+			}
+			System.out.println();
+			if ((i+1) % 3 == 0) {
+				System.out.println("---------------------------------------------");
+			}
+		}
 	}
 
 	/*
@@ -54,6 +72,6 @@ public class Sudoku {
 
 	public static void main(String args[]) {
 		new Sudoku(4).findSolution();
-
+		new Sudoku(9).generateSolution();
 	}
 }
