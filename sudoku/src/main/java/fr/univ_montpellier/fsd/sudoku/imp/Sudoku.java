@@ -2,100 +2,103 @@ package fr.univ_montpellier.fsd.sudoku.imp;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class Sudoku {
 
-	int n;
-	int s;
-	int[][] grid;
+    int n;
+    int s;
+    int[][] grid;
 
-	/*
-	 * Create an instance of the problem sudoku (nxn)
-	 * 
-	 */
+    /*
+     * Create an instance of the problem sudoku (nxn)
+     *
+     */
 
-	public Sudoku(int n) {
-		this.n = n;
-		this.s = (int) Math.sqrt(n);
-		this.grid = new int[n][n];
-	}
+    public Sudoku(int n) {
+        this.n = n;
+        this.s = (int) Math.sqrt(n);
+        this.grid = new int[n][n];
+    }
 
-	/*
-	 * check if this.grid is a correct sudoku solution.
-	 * 
-	 */
+    /*
+     * check if this.grid is a correct sudoku solution.
+     *
+     */
+    private boolean solutionChecker() {
+        for (int i = 0; i < n; i++) {
 
-	private boolean solutionChecker() {
+            // Set<> only accept different value.
+            Set<Integer> tmp = new HashSet<>();
 
-/*		// check the line
-		int line = 0;
-		int col = 0;
-		int numCase = this.grid[line][col];
-		for(int j=line+1; j < n; j++) {
-			if (numCase == this.grid[line][j]) return false;
-		}
+            // Check columns
+            for (int j = 0; j < n; j++) {
+                tmp.add(this.grid[i][j]);
+            }
 
-		// check column
-		for(int k=0; k < n; k++) {
-			if (numCase == this.grid[k][col]) return false;
-		}*/
+            // Check all value different and reset tmp.
+            if (tmp.size() != n) return false;
+            tmp = new HashSet<>();
 
-		for (int i=0; i < n; i++) {
+            // Check line
+            for (int k = 0; k < n; k++) {
+                tmp.add(this.grid[k][i]);
+            }
 
-			// Set<> only accept different value.
-			Set<Integer> tmp = new HashSet<>();
+            if (tmp.size() != n) return false;
 
-			// Check columns
-			for (int j=0; j < n; j++) {
-				tmp.add(this.grid[i][j]);
-			}
+            // Check squares
+            for (int l = 0; l < n; l += s) {
+                tmp.add(this.grid[i][l]);
+            }
 
-			// Check all value different and reset tmp.
-			if (tmp.size() != n) return false;
-			tmp = new HashSet<>();
+            if (tmp.size() != n) return false;
+        }
 
-			// Check line
-			for (int k=0; k < n; k++) {
-				tmp.add(this.grid[k][i]);
-			}
+        return true;
+    }
 
-			if (tmp.size() != n) return false;
+    /*
+     * Generate a random grid solution
+     *
+     */
 
-			// Check squares
-			for (int l=0; l < n; l+=s) {
-				tmp.add(this.grid[i][l]);
-			}
+    private void generateSolution() {
+        Random random = new Random();
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                grid[i][j] = random.nextInt(n) + 1;
+            }
+        }
+    }
 
-			if (tmp.size() != n) return false;
-		}
-		return false;
-	}
+    /*
+     * Find a solution to the sudoku problem
+     *
+     */
+    public void findSolution() {
+        do { generateSolution(); }
+        while (!solutionChecker());
+        displaySudoku();
+    }
 
-	/*
-	 * Generate a random grid solution
-	 * 
-	 */
+    public void displaySudoku() {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                System.out.print("| " + this.grid[i][j] + " ");
+                if ((j + 1) % s == 0) {
+                    System.out.print("|   ");
+                }
+            }
+            System.out.println();
+            if ((i + 1) % s == 0) {
+                System.out.println("---------------------------------------------");
+            }
+        }
+    }
 
-	private void generateSolution() {
-		// TODO
-
-	}
-
-	/*
-	 * Find a solution to the sudoku problem
-	 * 
-	 */
-	public void findSolution() {
-
-		// TODO
-	}
-
-	public static void main(String args[]) {
-		new Sudoku(4).findSolution();
-
-	}
+    public static void main(String args[]) {
+        Sudoku sudoku = new Sudoku(4);
+        sudoku.findSolution();
+    }
 }
