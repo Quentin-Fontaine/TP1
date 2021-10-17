@@ -4,6 +4,17 @@
 * [Nadjib Lazaar](mailto:nadjib.lazaar@umontpellier.fr).
 
 
+## Students
+
+🎓 Canta Thomas (21607288)
+🎓 Desgenetez Charles (21603540)
+🎓 Fontaine Quentin (21611404)
+🎓 Reiter Maxime (21604458)
+
+
 ## TP1 - Programmation Par Contraintes
 
 Lien classroom : https://classroom.github.com/g/whSKxuFS
+
+
+
