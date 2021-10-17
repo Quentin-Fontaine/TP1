@@ -6,9 +6,9 @@
 
 ## Students
 
-🎓 Canta Thomas (21607288)
-🎓 Desgenetez Charles (21603540)
-🎓 Fontaine Quentin (21611404)
+🎓 Canta Thomas (21607288)  
+🎓 Desgenetez Charles (21603540)  
+🎓 Fontaine Quentin (21611404)  
 🎓 Reiter Maxime (21604458)
 
 
