@@ -1,8 +1,8 @@
 package fr.univ_montpellier.fsd.sudoku.imp;
 
-import java.time.Duration;
-import java.time.Instant;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
 
 public class Sudoku {
 
@@ -25,38 +25,35 @@ public class Sudoku {
      * check if this.grid is a correct sudoku solution.
      *
      */
-    private boolean solutionChecker() {
-        for (int i = 0; i < n; i++) {
+	private boolean solutionChecker() {
+		return checkColRow(false) && checkColRow(true) && checkSquare();
+	}
 
-            // Set<> only accept different value.
-            Set<Integer> tmp = new HashSet<>();
+	private boolean checkColRow(boolean isColumn) {
+		for(int i = 0; i < this.n; i++) {
+			Set<Integer> numbers = new HashSet<>();
+			for(int j = 0; j < this.n; j++) {
+				numbers.add(isColumn ? this.grid[j][i] : this.grid[i][j]);
+			}
+			if(numbers.size() != this.n) return false;
+		}
+		return true;
+	}
 
-            // Check columns
-            for (int j = 0; j < n; j++) {
-                tmp.add(this.grid[i][j]);
-            }
-
-            // Check all value different and reset tmp.
-            if (tmp.size() != n) return false;
-            tmp = new HashSet<>();
-
-            // Check line
-            for (int k = 0; k < n; k++) {
-                tmp.add(this.grid[k][i]);
-            }
-
-            if (tmp.size() != n) return false;
-
-            // Check squares
-            for (int l = 0; l < n; l += s) {
-                tmp.add(this.grid[i][l]);
-            }
-
-            if (tmp.size() != n) return false;
-        }
-
-        return true;
-    }
+	private boolean checkSquare() {
+		for (int i = 0; i < this.n; i += this.s) {
+			for (int j = 0; j < this.n; j += this.s) {
+				Set<Integer> numbers = new HashSet<>();
+				for (int k = i; k < i + this.s; k++) {
+					for (int l = j; l < j + this.s; l++) {
+						numbers.add(this.grid[k][l]);
+					}
+				}
+				if(numbers.size() != this.n) return false;
+			}
+		}
+		return true;
+	}
 
     /*
      * Generate a random grid solution
