@@ -1,7 +1,8 @@
 package fr.univ_montpellier.fsd.sudoku.imp;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.*;
 
 public class Sudoku {
 
@@ -24,31 +25,34 @@ public class Sudoku {
      * check if this.grid is a correct sudoku solution.
      *
      */
-
     private boolean solutionChecker() {
-        final int total = n * (n + 1) / 2;
-        for (int i = 0; i < this.n; i++) {
-            int sum = 0;
-            final Set<Integer> rowNumbers = new HashSet<>();
-            for (int j = 0; j < this.n; j++) {
-                int number = this.grid[i][j];
-                rowNumbers.add(number);
-                sum += number;
+        for (int i = 0; i < n; i++) {
+
+            // Set<> only accept different value.
+            Set<Integer> tmp = new HashSet<>();
+
+            // Check columns
+            for (int j = 0; j < n; j++) {
+                tmp.add(this.grid[i][j]);
             }
 
-            if(rowNumbers.size() != this.n || sum != total) return false;
-        }
+            // Check all value different and reset tmp.
+            if (tmp.size() != n) return false;
+            tmp = new HashSet<>();
 
-        for(int j = 0; j < this.n; j++) {
-            int sum = 0;
-            final Set<Integer> colNumbers = new HashSet<>();
-            for(int i = 0; i < this.n; i++) {
-                int number = this.grid[i][j];
-                colNumbers.add(number);
-                sum += number;
+            // Check line
+            for (int k = 0; k < n; k++) {
+                tmp.add(this.grid[k][i]);
             }
 
-            if(colNumbers.size() != this.n || sum != total) return false;
+            if (tmp.size() != n) return false;
+
+            // Check squares
+            for (int l = 0; l < n; l += s) {
+                tmp.add(this.grid[i][l]);
+            }
+
+            if (tmp.size() != n) return false;
         }
 
         return true;
@@ -60,8 +64,12 @@ public class Sudoku {
      */
 
     private void generateSolution() {
-        // TODO
-
+        Random random = new Random();
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                grid[i][j] = random.nextInt(n) + 1;
+            }
+        }
     }
 
     /*
@@ -69,12 +77,28 @@ public class Sudoku {
      *
      */
     public void findSolution() {
+        do { generateSolution(); }
+        while (!solutionChecker());
+        displaySudoku();
+    }
 
-        // TODO
+    public void displaySudoku() {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                System.out.print("| " + this.grid[i][j] + " ");
+                if ((j + 1) % s == 0) {
+                    System.out.print("|   ");
+                }
+            }
+            System.out.println();
+            if ((i + 1) % s == 0) {
+                System.out.println("---------------------------------------------");
+            }
+        }
     }
 
     public static void main(String args[]) {
-        new Sudoku(4).findSolution();
-
+        Sudoku sudoku = new Sudoku(4);
+        sudoku.findSolution();
     }
 }
